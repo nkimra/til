@@ -1,6 +1,6 @@
 # Laradock
 
-## インストール
+## Laradockインストール
 
 - cloneする
 ~~~
@@ -50,3 +50,44 @@ docker-compose up -d mariadb apache2 phpmyadmin
 
 - 画面確認
   - http://localhost/
+
+## Laravelの設定
+
+- 初期設定
+~~~
+$ docker-compose exec workspace bash
+# composer install
+# php artisan key:generate
+~~~
+
+- DB設定
+~~~
+$ docker-compose exec workspace bash
+# vi .env
+DB_CONNECTION=mysql
+DB_HOST=mariadb
+DB_PORT=3306
+DB_DATABASE=default
+DB_USERNAME=default
+DB_PASSWORD=secret
+~~~
+
+- MariaDB再起動
+~~~
+$ docker-compose stop mariadb
+$ docker-compose up -d --build mariadb
+~~~
+
+docker-compose exec mariadb bash
+
+- マイグレーション
+~~~
+$ docker-compose exec workspace bash
+# php artisan migrate
+~~~
+
+- 画像アップロード用
+~~~
+composer require intervention/image
+php artisan storage:link
+~~~
